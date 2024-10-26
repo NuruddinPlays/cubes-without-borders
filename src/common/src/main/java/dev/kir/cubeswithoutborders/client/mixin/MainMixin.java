@@ -18,13 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 @Mixin(Main.class)
 abstract class MainMixin {
-    @ModifyReceiver(method = { "main" }, at = @At(value = "INVOKE", target = "Ljoptsimple/OptionParser;parse([Ljava/lang/String;)Ljoptsimple/OptionSet;"), require = 0)
+    @ModifyReceiver(method = "main([Ljava/lang/String;Z)V", at = @At(value = "INVOKE", target = "Ljoptsimple/OptionParser;parse([Ljava/lang/String;)Ljoptsimple/OptionSet;"), require = 0)
     private static OptionParser allowBorderlessOption(OptionParser parser, String[] args) {
         parser.accepts("borderless");
         return parser;
     }
 
-    @Inject(method = { "main" }, at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;beginInitialization()V", ordinal = 0), require = 0)
+    @Inject(method = "main([Ljava/lang/String;Z)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;beginInitialization()V", ordinal = 0), require = 0)
     private static void readBorderlessOption(CallbackInfo ci, @Local(ordinal = 0) OptionSet options) {
         boolean isBorderless = options.has("borderless");
         if (!isBorderless) {
