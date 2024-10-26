@@ -55,7 +55,7 @@ subprojects {
 
     processResources {
         filesMatching("*.mixins.json") {
-            expand java: JAVA_VERSION_INT
+            expand java: 17 // FIXME: Mixins do not support JAVA_21 just yet
         }
     }
 
