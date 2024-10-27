@@ -1,12 +1,16 @@
 package dev.kir.cubeswithoutborders.client.mixin;
 
+import dev.kir.cubeswithoutborders.client.ResizableGameRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gl.Framebuffer;
 import org.lwjgl.opengl.GL12;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(value = Framebuffer.class, priority = 0)
@@ -23,4 +27,20 @@ abstract class FramebufferMixin {
 
         return param;
     }
+
+    @Inject(method = "draw(IIZ)V", at = @At(value = "HEAD"), cancellable = true)
+    private void forceDraw(int width, int height, boolean disableBlend, CallbackInfo ci) {
+        // When blending is not used, Sodium bypasses the standard rendering
+        // process and directly copies the contents of one framebuffer to
+        // another, throwing our scaling logic under the bus.
+        // Therefore, we need to intervene before Sodium has the opportunity
+        // to do anything fancy.
+        if (ResizableGameRenderer.getInstance().isRendering()) {
+            this.drawInternal(width, height, disableBlend);
+            ci.cancel();
+        }
+    }
+
+    @Shadow
+    protected abstract void drawInternal(int width, int height, boolean disableBlend);
 }
