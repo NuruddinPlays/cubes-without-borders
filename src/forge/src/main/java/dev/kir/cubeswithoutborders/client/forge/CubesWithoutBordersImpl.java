@@ -18,7 +18,11 @@ public final class CubesWithoutBordersImpl {
     }
 
     private static void registerConfigScreen() {
-        if (!ModList.get().isLoaded("cloth_config") && !ModList.get().isLoaded("cloth_config2")) {
+        if (
+            !ModList.get().isLoaded("cloth_config") &&
+            !ModList.get().isLoaded("cloth_config2") &&
+            !ModList.get().isLoaded("cloth-config")
+        ) {
             return;
         }
 
