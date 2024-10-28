@@ -12,10 +12,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.screen.option.VideoOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonListWidget;
+import net.minecraft.client.option.BooleanOption;
 import net.minecraft.client.option.CyclingOption;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.Option;
 import net.minecraft.client.util.Window;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,19 +60,27 @@ abstract class VideoOptionsScreenMixin extends GameOptionsScreen {
         MinecraftClient client = MinecraftClient.getInstance();
         FullscreenManager window = (FullscreenManager)(Object)client.getWindow();
         Option[] options = Arrays.copyOf(widgetOptions, widgetOptions.length);
-        CyclingOption<Boolean> booleanFullscreenOption = Option.FULLSCREEN;
-        CyclingOption<FullscreenMode> enumFullscreenOption = CyclingOption.create(
+        BooleanOption booleanFullscreenOption = Option.FULLSCREEN;
+        CyclingOption enumFullscreenOption = new CyclingOption(
             "options.fullscreen",
-            Arrays.asList(FullscreenMode.values()),
-            value -> new TranslatableText(value.getTranslationKey()),
-            gameOptions -> window == null ? FullscreenMode.OFF : window.getFullscreenMode(),
-            (gameOptions, option, value) -> {
-                if (window == null || value == window.getFullscreenMode()) {
+            (gameOptions, amount) -> {
+                if (window == null) {
+                    return;
+                }
+
+                FullscreenMode value = FullscreenMode.get(window.getFullscreenMode().getId() + amount);
+                if (value == window.getFullscreenMode()) {
                     return;
                 }
 
                 window.setFullscreenMode(value);
                 gameOptions.fullscreen = window.getFullscreenMode() != FullscreenMode.OFF;
+            },
+            (gameOptions, option) -> {
+                FullscreenMode value = window == null ? FullscreenMode.OFF : window.getFullscreenMode();
+                MutableText fullscreenText = new TranslatableText("options.fullscreen");
+                MutableText valueText = new TranslatableText(value.getTranslationKey());
+                return fullscreenText.append(": ").append(valueText);
             }
         );
 

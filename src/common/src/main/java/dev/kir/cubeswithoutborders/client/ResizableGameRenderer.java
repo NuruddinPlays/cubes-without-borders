@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.WindowFramebuffer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.Window;
 
@@ -91,7 +90,8 @@ public final class ResizableGameRenderer {
         }
 
         if (this.framebuffer == null) {
-            this.framebuffer = new WindowFramebuffer(width, height);
+            this.framebuffer = new Framebuffer(width, height, true, MinecraftClient.IS_SYSTEM_MAC);
+            this.framebuffer.setClearColor(0, 0, 0, 0);
             this.resizeWorldRendererFramebuffers();
         }
 
