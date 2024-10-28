@@ -5,10 +5,10 @@ import dev.kir.cubeswithoutborders.client.config.CubesWithoutBordersConfig;
 import dev.kir.cubeswithoutborders.client.util.forge.ModLoaderUtilImpl;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ConfigGuiHandler;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fmlclient.ConfigGuiHandler;
 
 @OnlyIn(Dist.CLIENT)
 @Mod(ModLoaderUtilImpl.MOD_ID)
