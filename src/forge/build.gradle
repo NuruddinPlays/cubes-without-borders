@@ -22,6 +22,7 @@ loom {
 configurations {
     common
     shadowCommon
+    implementation.extendsFrom shadow
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
@@ -31,8 +32,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     modRuntimeOnly "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
 
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1"))
+    shadow(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -52,8 +52,11 @@ shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"
 
-    configurations = [project.configurations.shadowCommon]
+    configurations = [project.configurations.shadow, project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"
+
+    relocate("com.llamalad7.mixinextras", "dev.kir.cubeswithoutborders.client.mixinextras")
+    mergeServiceFiles()
 }
 
 remapJar {
