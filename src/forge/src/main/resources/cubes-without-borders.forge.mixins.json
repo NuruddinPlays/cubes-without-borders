@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.kir.cubeswithoutborders.client.forge.mixin",
+  "compatibilityLevel": "JAVA_${java}",
+  "plugin": "dev.kir.cubeswithoutborders.client.forge.mixin.ForgeMixinPlugin",
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
