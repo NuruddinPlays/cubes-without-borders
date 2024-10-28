@@ -33,16 +33,16 @@ abstract class SodiumGameOptionPagesMixin {
         }
 
         FullscreenManager fullscreenManager = FullscreenManager.getInstance();
-        Text fullscreenName = new TranslatableText("options.fullscreen");
-        Text optionName = option.getName();
+        String fullscreenName = "Fullscreen";
+        String optionName = option.getName();
         if (!fullscreenName.equals(optionName)) {
             return option;
         }
 
         return (OptionImpl<S, T>)OptionImpl.createBuilder(FullscreenMode.class, option.getStorage())
             .setName(option.getName())
-            .setTooltip(option.getTooltip())
-            .setControl(opts -> new CyclingControl<>(opts, FullscreenMode.class, Arrays.stream(FullscreenMode.values()).map(x -> new TranslatableText(x.getTranslationKey())).toArray(Text[]::new)))
+            .setTooltip(option.getTooltip().getString())
+            .setControl(opts -> new CyclingControl<>(opts, FullscreenMode.class, Arrays.stream(FullscreenMode.values()).map(x -> new TranslatableText(x.getTranslationKey()).getString()).toArray(String[]::new)))
             .setBinding((opts, value) -> fullscreenManager.setFullscreenMode(value), opts -> fullscreenManager.getFullscreenMode())
             .build();
     }
