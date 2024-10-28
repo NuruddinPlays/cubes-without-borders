@@ -64,7 +64,7 @@ public final class FullscreenTypes {
     }
 
     public static FullscreenType borderless() {
-        return FullscreenTypes.stream().findFirst().orElseThrow();
+        return FullscreenTypes.stream().findFirst().get();
     }
 
     private static FullscreenType register(FullscreenType fullscreenType) {
