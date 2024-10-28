@@ -74,7 +74,7 @@ abstract class WindowMixin implements FullscreenManager {
         this.currentFullscreen = (currentFullscreenMode == fullscreenMode) == this.fullscreen;
 
         // Sync the global `fullscreen` option with the current window state.
-        MinecraftClient.getInstance().options.getFullscreen().setValue(this.fullscreen);
+        MinecraftClient.getInstance().options.fullscreen = this.fullscreen;
     }
 
 
@@ -214,7 +214,7 @@ abstract class WindowMixin implements FullscreenManager {
         config.save();
 
         GameOptions options = MinecraftClient.getInstance().options;
-        options.getFullscreen().setValue(this.fullscreen);
+        options.fullscreen = this.fullscreen;
         options.write();
     }
 }

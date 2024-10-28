@@ -11,6 +11,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Environment(EnvType.CLIENT)
 public final class ClothConfigScreen {
     public static Screen create(CubesWithoutBordersConfig config, String modId, Screen parent) {
-        Text title = Text.translatable("modmenu.nameTranslation." + modId);
+        Text title = new TranslatableText("modmenu.nameTranslation." + modId);
         ConfigBuilder builder = ConfigBuilder.create()
             .setParentScreen(parent)
             .setTitle(title);
@@ -28,7 +29,7 @@ public final class ClothConfigScreen {
         ConfigEntryBuilder entries = builder.entryBuilder();
 
         // Pause On Lost Focus
-        Text pauseOnLostFocusText = Text.translatable("options.pauseOnLostFocus");
+        Text pauseOnLostFocusText = new TranslatableText("options.pauseOnLostFocus");
         boolean currentPauseOnLostFocus = client.options.pauseOnLostFocus;
         category.addEntry(entries
             .startBooleanToggle(pauseOnLostFocusText, currentPauseOnLostFocus)
@@ -37,7 +38,7 @@ public final class ClothConfigScreen {
             .build());
 
         // Fullscreen Type
-        Text fullscreenTypeText = Text.translatable("options.fullscreenType");
+        Text fullscreenTypeText = new TranslatableText("options.fullscreenType");
         FullscreenType defaultFullscreenType = FullscreenTypes.exclusive();
         FullscreenType currentFullscreenType = FullscreenTypes.validate(config.getFullscreenType(), defaultFullscreenType);
         List<String> fullscreenTypeSelections = FullscreenTypes.stream().map(FullscreenType::id).collect(Collectors.toList());
@@ -51,7 +52,7 @@ public final class ClothConfigScreen {
             .build());
 
         // Borderless Fullscreen Type
-        Text borderlessFullscreenTypeText = Text.translatable("options.borderlessFullscreenType");
+        Text borderlessFullscreenTypeText = new TranslatableText("options.borderlessFullscreenType");
         FullscreenType defaultBorderlessFullscreenType = FullscreenTypes.borderless();
         FullscreenType currentBorderlessFullscreenType = FullscreenTypes.validate(config.getBorderlessFullscreenType(), defaultBorderlessFullscreenType);
         category.addEntry(entries

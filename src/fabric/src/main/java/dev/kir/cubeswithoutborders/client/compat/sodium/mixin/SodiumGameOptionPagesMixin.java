@@ -10,9 +10,8 @@ import me.jellysquid.mods.sodium.client.gui.options.OptionImpl;
 import me.jellysquid.mods.sodium.client.gui.options.control.CyclingControl;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -34,9 +33,8 @@ abstract class SodiumGameOptionPagesMixin {
         }
 
         FullscreenManager fullscreenManager = FullscreenManager.getInstance();
-        SimpleOption<Boolean> fullscreenOption = MinecraftClient.getInstance().options.getFullscreen();
-        String fullscreenName = fullscreenOption.toString();
-        String optionName = option.getName().getString();
+        Text fullscreenName = new TranslatableText("options.fullscreen");
+        Text optionName = option.getName();
         if (!fullscreenName.equals(optionName)) {
             return option;
         }
@@ -44,7 +42,7 @@ abstract class SodiumGameOptionPagesMixin {
         return (OptionImpl<S, T>)OptionImpl.createBuilder(FullscreenMode.class, option.getStorage())
             .setName(option.getName())
             .setTooltip(option.getTooltip())
-            .setControl(opts -> new CyclingControl<>(opts, FullscreenMode.class, Arrays.stream(FullscreenMode.values()).map(x -> Text.translatable(x.getTranslationKey())).toArray(Text[]::new)))
+            .setControl(opts -> new CyclingControl<>(opts, FullscreenMode.class, Arrays.stream(FullscreenMode.values()).map(x -> new TranslatableText(x.getTranslationKey())).toArray(Text[]::new)))
             .setBinding((opts, value) -> fullscreenManager.setFullscreenMode(value), opts -> fullscreenManager.getFullscreenMode())
             .build();
     }
