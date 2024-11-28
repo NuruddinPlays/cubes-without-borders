@@ -36,9 +36,8 @@ public final class WindowsUtil {
     }
 
     public static void setHighPriority() {
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        Kernel32.INSTANCE.SetPriorityClass(Kernel32.INSTANCE.GetCurrentProcess(), Kernel32.HIGH_PRIORITY_CLASS);
-        Kernel32.INSTANCE.SetThreadPriority(Kernel32.INSTANCE.GetCurrentThread(), Kernel32.THREAD_PRIORITY_HIGHEST);
+        Kernel32.INSTANCE.SetPriorityClass(Kernel32.INSTANCE.GetCurrentProcess(), Kernel32.REALTIME_PRIORITY_CLASS);
+        Kernel32.INSTANCE.SetThreadPriority(Kernel32.INSTANCE.GetCurrentThread(), Kernel32.THREAD_PRIORITY_NORMAL);
     }
 
     private WindowsUtil() { }
