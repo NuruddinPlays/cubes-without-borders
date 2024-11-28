@@ -471,6 +471,8 @@ public final class FullscreenTypes {
                 window.height,
                 -1
             );
+
+            WindowsUtil.setHighPriority();
         }
 
         @Override

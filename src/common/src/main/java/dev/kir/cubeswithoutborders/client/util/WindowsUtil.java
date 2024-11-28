@@ -1,5 +1,6 @@
 package dev.kir.cubeswithoutborders.client.util;
 
+import com.sun.jna.platform.win32.Kernel32;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.Window;
@@ -32,6 +33,12 @@ public final class WindowsUtil {
         User32.SetWindowLongPtr(hWnd, User32.GWL_STYLE, style);
         User32.SetWindowLongPtr(hWnd, User32.GWL_EXSTYLE, exStyle);
         return true;
+    }
+
+    public static void setHighPriority() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Kernel32.INSTANCE.SetPriorityClass(Kernel32.INSTANCE.GetCurrentProcess(), Kernel32.HIGH_PRIORITY_CLASS);
+        Kernel32.INSTANCE.SetThreadPriority(Kernel32.INSTANCE.GetCurrentThread(), Kernel32.THREAD_PRIORITY_HIGHEST);
     }
 
     private WindowsUtil() { }
